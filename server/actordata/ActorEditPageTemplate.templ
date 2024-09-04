@@ -1,0 +1,45 @@
+package actordata
+
+import(
+    "strings"
+    "server/templates"
+)
+
+templ EditActorPageTemplate(ActorName string, Biography string, MovieCount int) {
+    <head>
+        @templates.HTMXLink()
+        @templates.TailwindLink()
+        @templates.FaviconLinksForHeader()
+        @templates.ViewportMetaTag()
+    </head>
+
+    <body>
+        @templates.NavBar()
+
+
+        <div class="flex flex-col items-start flex-1 space-y-10 px-4 py-4"> 
+            <div>
+                <p class="text-4xl font-medium py-2" >Editing Actor Info for <span class="font-semibold">{ActorName}</span></p>
+                <span class="font-light py-9 px-2"><span class="italic">Warning: </span>Movie Buff credentials are required to make changes! Incorrect information will be backtraced and the perpetrator will be punished accordingly.</span>
+            </div>
+
+            
+            <form class="flex flex-col  space-y-8 bg-grey-300" action={templ.SafeURL("/actors/save/" + strings.Join(strings.Split(ActorName, " "), "+"))} method="POST">
+                // TODO - allow movie buffs to edit the names of actors (but I need to implement
+                // proper database handling of this scenario (ie deleting old row with old name to
+                // avoid pollution of the db))
+                <label class="font-semibold font-lg px-2">Edit biography for {ActorName}:</label>
+                <textarea class="basis-1/2 bg-blue-200 rounded font-medium p-4 m-4 resize" name="biography" rows="10" cols="80">{Biography}</textarea>
+                <div>
+                    <label class="font-semibold font-lg px-2 py-2">Edit Movie Count:</label>
+                    <input class="border hover:border-dashed border-solid py-2 px-4" name="moviecount" type="text"/> 
+                </div>
+                <div>
+                    <button class="px-6 py-2 border-solid rounded-md bg-blue-500 hover:bg-blue-100 shadow focus:shadow-outline font-medium py-2 px-4 rounded hover:text-gray-800" value="submit">
+                        Commit Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </body>
+}
