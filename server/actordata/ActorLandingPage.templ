@@ -1,0 +1,20 @@
+package actordata 
+
+import "server/templates"
+
+templ ActorLandingPage() {
+    <head>
+        <title>MBDB Actor Landing Page</title>
+        @templates.HTMXLink()
+        @templates.TailwindLink()
+        @templates.FaviconLinksForHeader()
+        @templates.ViewportMetaTag()
+    </head>
+    <body class="bg-red-100">
+        @templates.NavBar()
+        <div class="flex flex-col flex-1 space-y-4">
+            <h1 class="text-4xl">Welcome to the Movie Buff <span class="text-yellow-900 italic">Actor Database</span></h1>
+            <p class="text-md font-sans">This page is also a placeholder- full implementation coming winter 2002!</p> // TODO - add stickman graphic from the office
+        </div>
+    </body>
+}

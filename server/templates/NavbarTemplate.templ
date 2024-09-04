@@ -1,0 +1,85 @@
+package templates
+
+var initializePageOnceHandle = templ.NewOnceHandle()
+
+templ mobileMenuButton() {
+    <div class="sm:hidden">
+        <button id="mobile-menu-button" class="flex-row h-10 w-auto">
+            <image id="mobile-menu-button-image" class="object-scale-down max-h-full m-auto"/>
+        </button>
+    </div>
+    @initializePageOnceHandle.Once() {
+        <script type="text/javascript">
+                // TODO -> download these and put them in the static assets instead of downloading them from the web (not significant but still pointless network traffic)
+                const mobileMenuButtonImages = [
+                    // downward pointing arrow
+                    "https://cdn4.iconfinder.com/data/icons/essential-app-2/16/down-menu-arrow-botton-1024.png",
+                    // upward pointing arrow
+                    "https://cdn4.iconfinder.com/data/icons/essential-app-2/16/up-menu-arrow-botton-1024.png"   
+                ]
+                
+                document.getElementById("mobile-menu-button-image").src = mobileMenuButtonImages[0]
+
+                function toggleMobileMenu() {
+                    let mobileMenuButton = document.getElementById("mobile-menu-button-image")
+                    let mobileNavMenu = document.getElementById("mobile-nav-menu")
+                    if (mobileMenuButton.src === mobileMenuButtonImages[0]) {
+                        mobileMenuButton.src = mobileMenuButtonImages[1]
+                        mobileNavMenu.style['display'] = "flex"
+                        return
+                    }
+                    mobileMenuButton.src = mobileMenuButtonImages[0]
+                    mobileNavMenu.style['display'] = "none"
+                }
+                
+                document.getElementById("mobile-menu-button").addEventListener("click", toggleMobileMenu)
+            </script>
+    }
+}
+
+templ navbarLinkButtons() {
+    <a class="text-md rounded-lg bg-yellow-500 hover:bg-yellow-800 pt-2 px-4 text-black hover:text-white" href="/">Home</a>
+
+    <a class="text-md rounded-lg bg-yellow-500 hover:bg-yellow-800 pt-2 px-4 text-black hover:text-white" href="/movies">Movies</a>
+
+    <a class="text-md rounded-lg bg-yellow-500 hover:bg-yellow-800 pt-2 px-4 text-black hover:text-white" href="/actors">Actors</a>
+
+    // <a class="text-md rounded-lg bg-yellow-500 hover:bg-yellow-800 pt-2 px-4 text-black hover:text-white">Directors</a>
+
+    <a class="text-md rounded-lg bg-yellow-500 hover:bg-yellow-800 pt-2 px-4 text-black hover:text-white" href="/oscars">Oscar</a>
+}
+
+templ fullscreenNavButtons() {
+<div class="hidden sm:flex sm:flex-1 sm:px-6 sm:space-x-4 sm:flex-row sm:space-x-4 justify-end">
+       @navbarLinkButtons()
+</div>
+}
+
+templ mobileNavMenu() {
+    <div class="hidden flex-col" id="mobile-nav-menu">
+        @navbarLinkButtons()    
+    </div>
+}
+
+templ NavBar() {
+    <nav class="bg-gray-800">
+        <div class="flex sm:flex-row sm:flex-1 sm:space-x-6 justify-center"> 
+            <div class="block order-last sm:order-first">
+                <a class="flex flex-row space-x-4" href="/">
+                    <img class="max-w-12 w-12" src="/static/assets/popcarn.png" />
+                    <p class="p-2 text-lg font-sans italic text-yellow-400">Movie Buff Database</p>
+                </a>
+            </div>
+
+            @fullscreenNavButtons()
+
+            // NOTE - the mobile stuff needs JS to control whether it's visible or not (based on toggling the menu) (TODO - replace JS with HTMX if possible)
+            <div class="sm:hidden flex flex-row flex-1 justify-start">
+                @mobileMenuButton()
+                <div>
+                    @mobileNavMenu()
+                </div>
+            </div>
+        </div>
+    </nav>
+}

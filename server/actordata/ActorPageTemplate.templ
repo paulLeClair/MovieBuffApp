@@ -1,0 +1,51 @@
+package actordata
+
+import (
+    "fmt"
+	"server/templates"
+)
+
+templ ActorPageTemplate(ActorName string, Biography string, MovieCount int) {
+<head>
+    <title>{ActorName} Information</title>
+    @templates.HTMXLink()
+    @templates.TailwindLink()
+    @templates.FaviconLinksForHeader()
+    @templates.ViewportMetaTag()
+</head>
+
+<body>
+    @templates.NavBar()
+
+    <div>
+        <header >
+        <div class="flex items-start">
+            <h1 class="mx-auto text-4xl text-semibold">{ActorName} Actor Guide</h1>
+        </div>
+        </header>
+    </div>
+
+    <main>
+    <div class="bg-slate-200">
+        <div class="flex flex-col px-6 py-2 rounded space-y-6 sm:justify-start justify-center">
+            <div class="">
+                <h2 class="text-2xl font-medium underline">Biography of {ActorName}</h2>
+                <p>{Biography}</p>
+            </div> 
+
+            <div class="flex flex-col border-1 border-blue-100">
+                <h2 class="text-xl font-semibold"><span class="underline">{ActorName} Trivia</span></h2>
+                <ul class="font-light list-disc">
+                    <li class="hover:bg-yellow-100 hover:border-2 max-w-sm pl-2">{ActorName} has been in {fmt.Sprintf("%d", MovieCount)} movies.</li>
+                    <li class="hover:bg-yellow-100 hover:border-2 max-w-sm pl-2">More information coming winter 2002!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    // TODO - add a button that links to the edit page (and in the future add credential checking)
+
+    </main>
+</body>
+
+}
